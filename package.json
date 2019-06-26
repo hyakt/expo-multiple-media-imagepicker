@@ -1,0 +1,32 @@
+{
+  "name": "expo-multiple-media-imagepicker",
+  "version": "0.0.1",
+  "description": "Multiple image selecting package for expo using MediaLibrary.",
+  "homepage": "https://github.com/hyakt/expo-multiple-media-imagepicker",
+  "main": "src/index.js",
+  "peerDependencies": {
+    "react-native": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Hayato KAJIYAMA <hyakt0@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "babel-preset-expo": "^5.0.0",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-config-standard-jsx": "^6.0.2",
+    "eslint-config-standard-react": "^7.0.2",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-standard": "^4.0.0"
+  },
+  "dependencies": {
+  }
+}
