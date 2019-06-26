@@ -1,9 +1,10 @@
 import React from 'react'
 import {
+  Text,
   StyleSheet,
   View,
   Dimensions,
-  Image,
+  ImageBackground,
   TouchableHighlight
 } from 'react-native'
 
@@ -21,14 +22,12 @@ class ImageTile extends React.PureComponent {
 
         <View style={{ position: 'relative' }}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Image
+            <ImageBackground
               style={{ width: width / 4, height: width / 4 }}
-              source={{ uri: item }} />
-            {/* {selected && */}
-            {/*  <Image */}
-            {/*    style={{ position: 'absolute', left: 'auto', top: 'auto', marginLeft: 'auto' }} */}
-            {/*    source={require('../Assets/tick-2.png')} */}
-            {/*  />} */}
+              source={{ uri: item.uri }} />
+            {selected &&
+             <Text>{this.props.itemCount}</Text>
+            }
           </View>
         </View>
       </TouchableHighlight>

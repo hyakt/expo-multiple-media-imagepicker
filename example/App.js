@@ -1,6 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button, ScrollView, Image } from 'react-native'
-import { ImageBrowser } from 'expo-multiple-media-imagepicker'
+
+import { Permissions } from 'expo'
+
+import ImageBrowser from './components/ImageBrowser'
+// import { ImageBrowser } from 'expo-multiple-media-imagepicker'
 
 export default class App extends React.Component {
   constructor (props) {
@@ -9,6 +13,10 @@ export default class App extends React.Component {
       imageBrowserOpen: false,
       photos: []
     }
+  }
+
+  async componentDidMount () {
+    Permissions.askAsync(Permissions.CAMERA_ROLL).then(d => console.log(d))
   }
 
   imageBrowserCallback = (callback) => {
@@ -57,6 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 30,
   }
 })
