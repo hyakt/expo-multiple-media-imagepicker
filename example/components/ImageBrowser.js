@@ -27,6 +27,7 @@ export default class ImageBrowser extends React.Component {
 
   componentDidMount () {
     this.getPhotos()
+    this.setState({ badgeColor: this.props.badgeColor ? this.props.badgeColor : '#007aff' })
   }
 
   selectImage = (index) => {
@@ -116,6 +117,7 @@ export default class ImageBrowser extends React.Component {
         camera={false}
         selected={selected}
         selectImage={this.selectImage}
+        badgeColor={this.state.badgeColor}
       />
     )
   }

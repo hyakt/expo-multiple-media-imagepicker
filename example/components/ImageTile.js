@@ -12,7 +12,7 @@ const { width } = Dimensions.get('window')
 
 export default class ImageTile extends React.PureComponent {
   render () {
-    let { item, index, selected, selectImage, camera } = this.props
+    let { item, index, selected, selectImage, camera, selectedItemCount, badgeColor } = this.props
     if (!item) return null
     return (
       <TouchableHighlight
@@ -26,8 +26,8 @@ export default class ImageTile extends React.PureComponent {
               style={{ width: width / 4, height: width / 4 }}
               source={{ uri: item.uri }} >
               {selected &&
-               <View style={styles.countBadge}>
-                 <Text style={styles.countBadgeText}>{this.props.selectedItemCount}</Text>
+               <View style={{...styles.countBadge, backgroundColor: badgeColor }}>
+                 <Text style={styles.countBadgeText}>{selectedItemCount}</Text>
                </View>
               }
             </ImageBackground>
@@ -40,7 +40,6 @@ export default class ImageTile extends React.PureComponent {
 
 const styles = StyleSheet.create({
   countBadge: {
-    backgroundColor: '#007aff',
     paddingHorizontal: 8.6,
     paddingVertical: 5,
     borderRadius: 50,

@@ -41,7 +41,7 @@ export default class App extends React.Component {
 
   render () {
     if (this.state.imageBrowserOpen) {
-      return (<ImageBrowser max={101} callback={this.imageBrowserCallback} />)
+      return (<ImageBrowser max={101} badgeColor={'#E31676'} callback={this.imageBrowserCallback} />)
     }
 
     return (
