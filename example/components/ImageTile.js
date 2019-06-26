@@ -24,10 +24,11 @@ class ImageTile extends React.PureComponent {
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <ImageBackground
               style={{ width: width / 4, height: width / 4 }}
-              source={{ uri: item.uri }} />
-            {selected &&
-             <Text>{this.props.itemCount}</Text>
-            }
+              source={{ uri: item.uri }} >
+              {selected &&
+               <Text>{this.props.selectedItemCount}</Text>
+              }
+            </ImageBackground>
           </View>
         </View>
       </TouchableHighlight>

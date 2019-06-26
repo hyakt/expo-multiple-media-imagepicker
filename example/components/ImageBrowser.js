@@ -19,7 +19,7 @@ export default class ImageBrowser extends React.Component {
     super(props)
     this.state = {
       photos: [],
-      selected: {},
+      selected: [],
       after: null,
       hasNextPage: true
     }
@@ -30,16 +30,18 @@ export default class ImageBrowser extends React.Component {
   }
 
   selectImage = (index) => {
-    let newSelected = { ...this.state.selected }
-    if (newSelected[index]) {
-      delete newSelected[index]
+    let newSelected = Array.from(this.state.selected)
+
+    if (newSelected.indexOf(index) === -1) {
+      newSelected.push(index)
     } else {
-      newSelected[index] = true
+      const deleteIndex = newSelected.indexOf(index)
+      newSelected.splice(deleteIndex, 1)
     }
 
-    if (Object.keys(newSelected).length > this.props.max) return
+    if (newSelected.length > this.props.max) return
+    if (newSelected.length === 0) newSelected = []
 
-    if (!newSelected) newSelected = {}
     this.setState({ selected: newSelected })
   }
 
@@ -84,7 +86,7 @@ export default class ImageBrowser extends React.Component {
   }
 
   renderHeader = () => {
-    let selectedCount = Object.keys(this.state.selected).length
+    let selectedCount = this.state.selected.length
     let headerText = selectedCount + ' Selected'
     if (selectedCount === this.props.max) headerText = headerText + ' (Max)'
     return (
@@ -103,12 +105,13 @@ export default class ImageBrowser extends React.Component {
   }
 
   renderImageTile = ({ item, index }) => {
-    const selected = this.state.selected[index]
-    const itemCount = Object.keys(this.state.selected).indexOf(index.toString()) + 1
+    const selected = this.state.selected.indexOf(index) !== -1
+    const selectedItemCount = this.state.selected.indexOf(index) + 1
+
     return (
       <ImageTile
         item={item}
-        itemCount={itemCount}
+        selectedItemCount={selectedItemCount}
         index={index}
         camera={false}
         selected={selected}
