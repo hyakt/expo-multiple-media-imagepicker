@@ -10,13 +10,13 @@ import {
 
 const { width } = Dimensions.get('window')
 
-class ImageTile extends React.PureComponent {
+export default class ImageTile extends React.PureComponent {
   render () {
     let { item, index, selected, selectImage, camera } = this.props
     if (!item) return null
     return (
       <TouchableHighlight
-        style={[camera ? styles.imageSlider : '', { opacity: selected ? 0.8 : 1 }]}
+        style={{ opacity: selected ? 0.8 : 1 }}
         underlayColor='transparent'
         onPress={() => selectImage(index)} >
 
@@ -26,7 +26,9 @@ class ImageTile extends React.PureComponent {
               style={{ width: width / 4, height: width / 4 }}
               source={{ uri: item.uri }} >
               {selected &&
-               <Text>{this.props.selectedItemCount}</Text>
+               <View style={styles.countBadge}>
+                 <Text style={styles.countBadgeText}>{this.props.selectedItemCount}</Text>
+               </View>
               }
             </ImageBackground>
           </View>
@@ -37,10 +39,20 @@ class ImageTile extends React.PureComponent {
 }
 
 const styles = StyleSheet.create({
-  imageSlider: {
-    alignSelf: 'flex-end',
-    overflow: 'scroll'
+  countBadge: {
+    backgroundColor: '#007aff',
+    paddingHorizontal: 8.6,
+    paddingVertical: 5,
+    borderRadius: 50,
+    position: 'absolute',
+    right: 3,
+    bottom: 3,
+    justifyContent: 'center'
+  },
+  countBadgeText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    padding: 'auto'
   }
 })
-
-export default ImageTile
