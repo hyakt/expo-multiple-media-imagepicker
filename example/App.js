@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, Button, ScrollView, Image } from 'react-native'
 
 import { Permissions } from 'expo'
 
-import ImageBrowser from './components/ImageBrowser'
-// import { ImageBrowser } from 'expo-multiple-media-imagepicker'
+// import ImageBrowser from './components/ImageBrowser'
+import { ImageBrowser } from 'expo-multiple-media-imagepicker'
 
 export default class App extends React.Component {
   constructor (props) {

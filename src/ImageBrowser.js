@@ -5,14 +5,15 @@ import {
   View,
   FlatList,
   Dimensions,
-  Button
+  Button,
+  ActivityIndicator
 } from 'react-native'
 
 import * as MediaLibrary from 'expo-media-library'
 
 import ImageTile from './ImageTile'
 
-const { width } = Dimensions.get('window')
+const { height, width } = Dimensions.get('window')
 
 export default class ImageBrowser extends React.Component {
   constructor (props) {
@@ -71,8 +72,9 @@ export default class ImageBrowser extends React.Component {
 
   prepareCallback = () => {
     let { selected, photos } = this.state
-    let selectedPhotos = selected.map(i => photos[i])
-    this.props.callback(selectedPhotos)
+    const selectedPhotos = selected.map(i => photos[i])
+    const assetsInfo = Promise.all(selectedPhotos.map(i => MediaLibrary.getAssetInfoAsync(i)))
+    this.props.callback(assetsInfo)
   }
 
   renderHeader = () => {
@@ -89,7 +91,7 @@ export default class ImageBrowser extends React.Component {
         <Button
           color={headerButtonColor}
           title={headerCloseText}
-          onPress={() => this.props.callback([])}
+          onPress={() => this.props.callback(Promise.resolve([]))}
         />
         <Text style={styles.headerText}>{headerText}</Text>
         <Button
@@ -118,6 +120,14 @@ export default class ImageBrowser extends React.Component {
     )
   }
 
+  renderLoading = () => {
+    return (
+      <View style={styles.emptyContent}>
+        <ActivityIndicator size='large' color={this.props.loadingColor ? this.props.loadingColor : '#bbb'} />
+      </View>
+    )
+  }
+
   renderImages = () => {
     return (
       <FlatList
@@ -127,7 +137,7 @@ export default class ImageBrowser extends React.Component {
         keyExtractor={(_, index) => index}
         onEndReached={() => { this.getPhotos() }}
         onEndReachedThreshold={0.5}
-        ListEmptyComponent={<Text>Loading...</Text>}
+        ListEmptyComponent={this.renderLoading}
         initialNumToRender={24}
         getItemLayout={this.getItemLayout}
       />
@@ -161,5 +171,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginTop: 8
+  },
+  emptyContent: {
+    flex: 1,
+    position: 'absolute',
+    top: (height / 2) - 8,
+    left: (width / 2) - 8
   }
 })
