@@ -5,7 +5,8 @@
   "homepage": "https://github.com/hyakt/expo-multiple-media-imagepicker",
   "main": "src/index.js",
   "peerDependencies": {
-    "react-native": "*"
+    "react-native": "*",
+    "@unimodules/core": "*"
   },
   "dependencies": {
     "expo-media-library": "^5.0.1"
