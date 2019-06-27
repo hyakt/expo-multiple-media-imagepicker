@@ -11,7 +11,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ['Reat Native', 'imagepicker', 'multiple', 'Media Library'],
   "author": "Hayato KAJIYAMA <hyakt0@gmail.com>",
   "license": "ISC",
   "devDependencies": {
@@ -27,5 +27,12 @@
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-standard": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyakt/expo-multiple-media-imagepicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hyakt/expo-multiple-media-imagepicker/issues"
   }
 }
