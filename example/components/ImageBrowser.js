@@ -88,17 +88,24 @@ export default class ImageBrowser extends React.Component {
 
   renderHeader = () => {
     let selectedCount = this.state.selected.length
-    let headerText = selectedCount + ' Selected'
+
+    let headerText = `${selectedCount} ${this.props.headerSelectText ? this.props.headerSelectText : 'Selected'}`
     if (selectedCount === this.props.max) headerText = headerText + ' (Max)'
+    const headerCloseText = this.props.headerCloseText ? this.props.headerCloseText : 'Close'
+    const headerDoneText = this.props.headerDoneText ? this.props.headerDoneText : 'Done'
+    const headerButtonColor = this.props.headerButtonColor ? this.props.headerButtonColor : '#007aff'
+
     return (
       <View style={styles.header}>
         <Button
-          title='Close'
+          color={headerButtonColor}
+          title={headerCloseText}
           onPress={() => this.props.callback(Promise.resolve([]))}
         />
-        <Text>{headerText}</Text>
+        <Text style={styles.headerText}>{headerText}</Text>
         <Button
-          title='Done'
+          color={headerButtonColor}
+          title={headerDoneText}
           onPress={() => this.prepareCallback()}
         />
       </View>
@@ -153,12 +160,17 @@ const styles = StyleSheet.create({
     flex: 1
   },
   header: {
-    height: 60,
+    height: 50,
     width: width,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
     marginTop: 30
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginTop: 8
   }
 })
