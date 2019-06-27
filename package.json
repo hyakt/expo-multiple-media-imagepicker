@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "peerDependencies": {
     "react-native": "*",
-    "@unimodules/core": "*"
+    "@unimodules/core": "^2.0.0"
   },
   "dependencies": {
     "expo-media-library": "^5.0.1"
