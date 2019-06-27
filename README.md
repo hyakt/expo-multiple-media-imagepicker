@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/expo-multiple-media-imagepicker.svg)](https://badge.fury.io/js/expo-multiple-media-imagepicker)
+
 # expo-multiple-media-imagepicker
 
 Multiple image selecting package for React Native using Expo MediaLibrary.
