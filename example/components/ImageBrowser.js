@@ -5,14 +5,15 @@ import {
   View,
   FlatList,
   Dimensions,
-  Button
+  Button,
+  ActivityIndicator
 } from 'react-native'
 
 import * as MediaLibrary from 'expo-media-library'
 
 import ImageTile from './ImageTile'
 
-const { width } = Dimensions.get('window')
+const { height, width } = Dimensions.get('window')
 
 export default class ImageBrowser extends React.Component {
   constructor (props) {
@@ -118,6 +119,14 @@ export default class ImageBrowser extends React.Component {
     )
   }
 
+  renderLoading = () => {
+    return (
+      <View style={styles.emptyContent}>
+        <ActivityIndicator size='large' color={this.props.loadingColor ? this.props.loadingColor : '#bbb'} />
+      </View>
+    )
+  }
+
   renderImages = () => {
     return (
       <FlatList
@@ -127,7 +136,7 @@ export default class ImageBrowser extends React.Component {
         keyExtractor={(_, index) => index}
         onEndReached={() => { this.getPhotos() }}
         onEndReachedThreshold={0.5}
-        ListEmptyComponent={<Text>Loading...</Text>}
+        ListEmptyComponent={this.renderLoading}
         initialNumToRender={24}
         getItemLayout={this.getItemLayout}
       />
@@ -161,5 +170,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginTop: 8
+  },
+  emptyContent: {
+    flex: 1,
+    position: 'absolute',
+    top: (height / 2) - 8,
+    left: (width / 2) - 8
   }
 })

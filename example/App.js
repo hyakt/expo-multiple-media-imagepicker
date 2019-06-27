@@ -46,6 +46,7 @@ export default class App extends React.Component {
                 headerButtonColor={'#E31676'}
                 headerSelectText={'枚の画像を選択中'}
                 badgeColor={'#E31676'}
+                loadingColor={'#E31676'}
                 callback={this.imageBrowserCallback} />)
     }
 

@@ -7,7 +7,9 @@ import {
   Dimensions,
   Button
 } from 'react-native'
-import { FileSystem, MediaLibrary } from 'expo'
+
+import * as MediaLibrary from 'expo-media-library'
+
 import ImageTile from './ImageTile'
 
 const { width } = Dimensions.get('window')
@@ -17,44 +19,48 @@ export default class ImageBrowser extends React.Component {
     super(props)
     this.state = {
       photos: [],
-      selected: {},
+      selected: [],
       after: null,
-      has_next_page: true
+      hasNextPage: true
     }
   }
 
   componentDidMount () {
     this.getPhotos()
+    this.setState({ badgeColor: this.props.badgeColor ? this.props.badgeColor : '#007aff' })
   }
 
   selectImage = (index) => {
-    let newSelected = { ...this.state.selected }
-    if (newSelected[index]) {
-      delete newSelected[index]
+    let newSelected = Array.from(this.state.selected)
+
+    if (newSelected.indexOf(index) === -1) {
+      newSelected.push(index)
     } else {
-      newSelected[index] = true
+      const deleteIndex = newSelected.indexOf(index)
+      newSelected.splice(deleteIndex, 1)
     }
-    if (Object.keys(newSelected).length > this.props.max) return
-    if (!newSelected) newSelected = {}
+
+    if (newSelected.length > this.props.max) return
+    if (newSelected.length === 0) newSelected = []
+
     this.setState({ selected: newSelected })
   }
 
   getPhotos = () => {
     let params = { first: 500, mimeTypes: ['image/jpeg'] }
     if (this.state.after) params.after = this.state.after
-    if (!this.state.has_next_page) return
+    if (!this.state.hasNextPage) return
     MediaLibrary
       .getAssetsAsync(params)
-      .then(this.processPhotos)
+      .then((assets) => this.processPhotos(assets))
   }
 
-  processPhotos = (r) => {
-    console.log(r)
-    if (this.state.after === r.endCursor) return
+  processPhotos = (assets) => {
+    if (this.state.after === assets.endCursor) return
     this.setState({
-      photos: [...this.state.photos, ...r],
-      after: r.page_info.end_cursor,
-      has_next_page: r.page_info.has_next_page
+      photos: [...this.state.photos, ...assets.assets],
+      after: assets.endCursor,
+      hasNextPage: assets.hasNextPage
     })
   }
 
@@ -63,36 +69,32 @@ export default class ImageBrowser extends React.Component {
     return { length, offset: length * index, index }
   }
 
-  prepareCallback () {
+  prepareCallback = () => {
     let { selected, photos } = this.state
-    let selectedPhotos = photos.filter((item, index) => {
-      return (selected[index])
-    })
-    let files = selectedPhotos
-      .map(i => FileSystem.getInfoAsync(i, { md5: true }))
-    let callbackResult = Promise
-      .all(files)
-      .then(imageData => {
-        return imageData.map((data, i) => {
-          return { file: selectedPhotos[i], ...data }
-        })
-      })
-    this.props.callback(callbackResult)
+    let selectedPhotos = selected.map(i => photos[i])
+    this.props.callback(selectedPhotos)
   }
 
   renderHeader = () => {
-    let selectedCount = Object.keys(this.state.selected).length
-    let headerText = selectedCount + ' Selected'
+    let selectedCount = this.state.selected.length
+
+    let headerText = `${selectedCount} ${this.props.headerSelectText ? this.props.headerSelectText : 'Selected'}`
     if (selectedCount === this.props.max) headerText = headerText + ' (Max)'
+    const headerCloseText = this.props.headerCloseText ? this.props.headerCloseText : 'Close'
+    const headerDoneText = this.props.headerDoneText ? this.props.headerDoneText : 'Done'
+    const headerButtonColor = this.props.headerButtonColor ? this.props.headerButtonColor : '#007aff'
+
     return (
       <View style={styles.header}>
         <Button
-          title='Close'
-          onPress={() => this.props.callback(Promise.resolve([]))}
+          color={headerButtonColor}
+          title={headerCloseText}
+          onPress={() => this.props.callback([])}
         />
-        <Text>{headerText}</Text>
+        <Text style={styles.headerText}>{headerText}</Text>
         <Button
-          title='Done'
+          color={headerButtonColor}
+          title={headerDoneText}
           onPress={() => this.prepareCallback()}
         />
       </View>
@@ -100,18 +102,23 @@ export default class ImageBrowser extends React.Component {
   }
 
   renderImageTile = ({ item, index }) => {
-    let selected = !!this.state.selected[index]
+    const selected = this.state.selected.indexOf(index) !== -1
+    const selectedItemCount = this.state.selected.indexOf(index) + 1
+
     return (
       <ImageTile
         item={item}
+        selectedItemCount={selectedItemCount}
         index={index}
         camera={false}
         selected={selected}
         selectImage={this.selectImage}
+        badgeColor={this.state.badgeColor}
       />
     )
   }
-  renderImages () {
+
+  renderImages = () => {
     return (
       <FlatList
         data={this.state.photos}
@@ -148,6 +155,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    marginTop: 20
+    marginTop: 30
+  },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginTop: 8
   }
 })
