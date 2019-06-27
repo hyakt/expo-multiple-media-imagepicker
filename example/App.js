@@ -19,12 +19,14 @@ export default class App extends React.Component {
     Permissions.askAsync(Permissions.CAMERA_ROLL).then(d => console.log(d))
   }
 
-  imageBrowserCallback = (photos) => {
-    console.log(photos)
-    this.setState({
-      imageBrowserOpen: false,
-      photos
-    })
+  imageBrowserCallback = (callback) => {
+    callback.then((photos) => {
+      console.log(photos)
+      this.setState({
+        imageBrowserOpen: false,
+        photos
+      })
+    }).catch((e) => console.log(e))
   }
 
   renderImage (item, i) {
@@ -39,15 +41,15 @@ export default class App extends React.Component {
 
   render () {
     if (this.state.imageBrowserOpen) {
-      return (<ImageBrowser
-                max={101}
-                headerCloseText={'キャンセル'}
-                headerDoneText={'完了'}
-                headerButtonColor={'#E31676'}
-                headerSelectText={'枚の画像を選択中'}
-                badgeColor={'#E31676'}
-                loadingColor={'#E31676'}
-                callback={this.imageBrowserCallback} />)
+      return (
+        <ImageBrowser
+          max={101}
+          headerCloseText={'キャンセル'}
+          headerDoneText={'完了'}
+          headerButtonColor={'#E31676'}
+          headerSelectText={'枚の画像を選択中'}
+          badgeColor={'#E31676'}
+          callback={this.imageBrowserCallback} />)
     }
 
     return (
