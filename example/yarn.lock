@@ -2166,13 +2166,17 @@ expo-mail-composer@~5.0.1:
     lodash "^4.6.0"
     query-string "^6.2.0"
 
-expo-media-library@~5.0.1:
+expo-media-library@^5.0.1, expo-media-library@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/expo-media-library/-/expo-media-library-5.0.1.tgz#f7f3b7fa0808eac224cd966583253380f0af2d1d"
   integrity sha512-b5DHS+Ga8dyhw1+xQDB7Dafiea1jd91iOXbaE8LWg+awUDXTh6Ss14KMh8WI2mE3DVbBkcuLPTQ9NXlM2Oz67Q==
 
-expo-multiple-media-imagepicker@../:
-  version "0.0.1"
+expo-multiple-media-imagepicker@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/expo-multiple-media-imagepicker/-/expo-multiple-media-imagepicker-1.0.1.tgz#4778aabf1a37233ce204681fd0031ccadc01ce46"
+  integrity sha512-cmlpMaPRoqp+KSZyIAwqQtwhOUPf3HTrQC9AXBPBQQlMMqOLwsh3We2I4mHhltreKB78Hn0UsUtPzQgtow/PEA==
+  dependencies:
+    expo-media-library "^5.0.1"
 
 expo-payments-stripe@~5.0.1:
   version "5.0.1"
