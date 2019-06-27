@@ -19,21 +19,19 @@ export default class App extends React.Component {
     Permissions.askAsync(Permissions.CAMERA_ROLL).then(d => console.log(d))
   }
 
-  imageBrowserCallback = (callback) => {
-    callback.then((photos) => {
-      console.log(photos)
-      this.setState({
-        imageBrowserOpen: false,
-        photos
-      })
-    }).catch((e) => console.log(e))
+  imageBrowserCallback = (photos) => {
+    console.log(photos)
+    this.setState({
+      imageBrowserOpen: false,
+      photos
+    })
   }
 
   renderImage (item, i) {
     return (
       <Image
         style={{ height: 100, width: 100 }}
-        source={{ uri: item.file }}
+        source={{ uri: item.uri }}
         key={i}
       />
     )
@@ -73,6 +71,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 30,
+    marginTop: 30
   }
 })

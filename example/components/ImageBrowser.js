@@ -71,19 +71,8 @@ export default class ImageBrowser extends React.Component {
 
   prepareCallback = () => {
     let { selected, photos } = this.state
-    let selectedPhotos = photos.filter((item, index) => {
-      return (selected[index])
-    })
-    let files = selectedPhotos
-        .map(i => FileSystem.getInfoAsync(i, { md5: true }))
-    let callbackResult = Promise
-        .all(files)
-        .then(imageData => {
-          return imageData.map((data, i) => {
-            return { file: selectedPhotos[i], ...data }
-          })
-        })
-    this.props.callback(callbackResult)
+    let selectedPhotos = selected.map(i => photos[i])
+    this.props.callback(selectedPhotos)
   }
 
   renderHeader = () => {
@@ -100,7 +89,7 @@ export default class ImageBrowser extends React.Component {
         <Button
           color={headerButtonColor}
           title={headerCloseText}
-          onPress={() => this.props.callback(Promise.resolve([]))}
+          onPress={() => this.props.callback([])}
         />
         <Text style={styles.headerText}>{headerText}</Text>
         <Button
