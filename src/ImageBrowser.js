@@ -48,18 +48,30 @@ export default class ImageBrowser extends React.Component {
   }
 
   getPhotos = () => {
-    let params = { first: 500, mimeTypes: ['image/jpeg'] }
+    let params = { first: 500 }
     if (this.state.after) params.after = this.state.after
     if (!this.state.hasNextPage) return
     MediaLibrary
       .getAssetsAsync(params)
-      .then((assets) => this.processPhotos(assets))
+      .then((assets) => {
+        this.processPhotos(assets)
+      })
   }
 
   processPhotos = (assets) => {
     if (this.state.after === assets.endCursor) return
+
+    let displayAssets
+    if (this.props.mediaSubtype == null) {
+      displayAssets = assets.assets
+    } else {
+      displayAssets = assets.assets.filter((asset) => {
+        return asset.mediaSubtypes.includes(this.props.mediaSubtype)
+      })
+    }
+
     this.setState({
-      photos: [...this.state.photos, ...assets.assets],
+      photos: [...this.state.photos, ...displayAssets],
       after: assets.endCursor,
       hasNextPage: assets.hasNextPage
     })
