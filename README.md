@@ -11,7 +11,7 @@ Multiple image selecting package for React Native using Expo MediaLibrary.
 
 ![Demo](./docs/demo.gif)
 
-## Usage
+## usage
 1. Install the repository
     ```bash
     $ npm install --save expo-multiple-media-imagepicker
