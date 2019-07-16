@@ -10,10 +10,11 @@ import {
 } from 'react-native'
 
 import * as MediaLibrary from 'expo-media-library'
+import SafeAreaView from 'react-native-safe-area-view'
 
 import ImageTile from './ImageTile'
 
-const { height, width } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 export default class ImageBrowser extends React.Component {
   constructor (props) {
@@ -99,19 +100,23 @@ export default class ImageBrowser extends React.Component {
     const headerButtonColor = this.props.headerButtonColor ? this.props.headerButtonColor : '#007aff'
 
     return (
-      <View style={styles.header}>
-        <Button
-          color={headerButtonColor}
-          title={headerCloseText}
-          onPress={() => this.props.callback(Promise.resolve([]))}
-        />
-        <Text style={styles.headerText}>{headerText}</Text>
-        <Button
-          color={headerButtonColor}
-          title={headerDoneText}
-          onPress={() => this.prepareCallback()}
-        />
-      </View>
+      <SafeAreaView forceInset={{ top: 'always' }} style={{ height: 52 }}>
+        <View style={styles.header}>
+
+          <Button
+            color={headerButtonColor}
+            title={headerCloseText}
+            onPress={() => this.props.callback(Promise.resolve([]))}
+          />
+          <Text style={styles.headerText}>{headerText}</Text>
+          <Button
+            color={headerButtonColor}
+            title={headerDoneText}
+            onPress={() => this.prepareCallback()}
+          />
+
+        </View>
+      </SafeAreaView>
     )
   }
 
@@ -140,16 +145,25 @@ export default class ImageBrowser extends React.Component {
     )
   }
 
+  renderEmpty = () => {
+    return (
+      <View style={styles.emptyContent}>
+        <Text style={styles.emptyText}>{this.props.emptyText ? this.props.emptyText : 'No image'}</Text>
+      </View>
+    )
+  }
+
   renderImages = () => {
     return (
       <FlatList
+        contentContainerStyle={{ flexGrow: 1 }}
         data={this.state.photos}
         numColumns={4}
         renderItem={this.renderImageTile}
         keyExtractor={(_, index) => index}
         onEndReached={() => { this.getPhotos() }}
         onEndReachedThreshold={0.5}
-        ListEmptyComponent={this.renderLoading}
+        ListEmptyComponent={this.renderEmpty}
         initialNumToRender={24}
         getItemLayout={this.getItemLayout}
       />
@@ -171,23 +185,24 @@ const styles = StyleSheet.create({
     flex: 1
   },
   header: {
-    height: 50,
     width: width,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    marginTop: 30
+    padding: 10
   },
   headerText: {
     fontWeight: 'bold',
     fontSize: 16,
-    marginTop: 8
+    lineHeight: 19
   },
   emptyContent: {
-    flex: 1,
-    position: 'absolute',
-    top: (height / 2) - 8,
-    left: (width / 2) - 8
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  emptyText: {
+    color: '#bbb',
+    fontSize: 20
   }
 })
