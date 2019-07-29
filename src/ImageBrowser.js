@@ -49,7 +49,7 @@ export default class ImageBrowser extends React.Component {
   }
 
   getPhotos = () => {
-    let params = { first: 500 }
+    let params = { first: 500, groupTypes: 'All' }
     if (this.state.after) params.after = this.state.after
     if (!this.state.hasNextPage) return
     MediaLibrary
