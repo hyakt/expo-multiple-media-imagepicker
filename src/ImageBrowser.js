@@ -6,7 +6,8 @@ import {
   FlatList,
   Dimensions,
   Button,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native'
 
 import * as MediaLibrary from 'expo-media-library'
@@ -63,7 +64,7 @@ export default class ImageBrowser extends React.Component {
     if (this.state.after === assets.endCursor) return
 
     let displayAssets
-    if (this.props.mediaSubtype == null) {
+    if (Platform.OS !== 'ios' || this.props.mediaSubtype == null) {
       displayAssets = assets.assets
     } else {
       displayAssets = assets.assets.filter((asset) => {
